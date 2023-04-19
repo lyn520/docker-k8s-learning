@@ -1,0 +1,6 @@
+filter在middleware执行后才运行，先执行全局filter，然后是controller和action上绑定的filter。
+filter主要用于处理重复性操作，避免重复代码，但是有局限性，对于不属于asp.net范畴的静态页面，就无法使用过滤器，而是使用middleware处理。
+asp.net 请求管道中的middleware可以选择是否将请求传递给管道中的next middleware，可以在next middleware之前和之后执行业务逻辑。
+
+filter只处理mvc pipeline中的请求，而且可以只针对指定的controller和action，middleware做不到这一点。
+自定义filter中使用依赖注入时，需要使用TypeFilter或ServiceFilter引入自定义filter，前者默认时transient，每次都会创建一个对象，后者可以自己决定注入的filer生命周期。
