@@ -1,0 +1,10 @@
+[root@localhost]# vi /etc/docker/daemon.json  # 创建或修改 /etc/docker/daemon.json 文件，修改为如下形式
+{
+  "registry-mirrors" : [
+    "https://registry.cn-hangzhou.aliyuncs.com",
+    "https://hub-mirror.c.163.com",
+    "https://mirror.baidubce.com"
+  ]
+}
+
+[root@localhost]# systemctl daemon-reload && systemctl restart docker

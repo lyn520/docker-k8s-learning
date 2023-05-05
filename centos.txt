@@ -1,0 +1,130 @@
+------------------------------启用桌面--------------------------------
+ yum grouplist
+要安装 KDE 桌面环境（使用的是 Plasma 作为默认的桌面管理器了，很漂亮，看这里），
+
+# yum groupinstall "KDE Plasma Workspaces"
+要安装 GNOME 环境，
+
+# yum groupinstall "GNOME Desktop"
+
+安装程序会自动解决安装包和组件的依赖关系。
+
+
+systemctl get-default
+
+systemctl set-default graphical.target
+startx
+
+-----------------------------启用网卡---------------------------------
+用ip addr命令查看IP设置，发现ens32 没有 inet 这个属性，那么就没法通过IP地址连接虚拟机
+用vi 命令查看ens32网卡配置：vi /etc/sysconfig/network-scripts/ifcfg-ens32
+从配置中发现centos7默认不启动网卡（ONBOOT=no）
+将此项改为yes(ONBOOT=yes)
+重启网卡：systemctl restart network/service network start
+
+------------------------------------赋予root权限
+使用visudo命令修改 /etc/sudoers 文件，找到下面一行，把前面的注释（#）去掉，最终结果为：
+
+## Allows people in group wheel to run all commands
+%wheel ALL=(ALL) ALL
+然后修改用户，使其属于root组（wheel），命令如下：
+#usermod -g root qyc
+修改完毕，现在可以用qyc帐号登录，然后用命令 su – ，即可获得root权限进行操作。
+
+修改 /etc/sudoers 文件，找到下面一行，在root下面添加一行，如下所示：
+
+## Allow root to run any commands anywhere
+root ALL=(ALL) ALL
+qyc ALL=(ALL) ALL
+修改完毕，现在可以用qyc帐号登录，然后用命令 su – ，即可获得root权限进行操作。
+
+为了避免每次使用某些命令的时候都需要输入密码，这里需要改一下上面的配置，如：
+qyc ALL=(ALL) NOPASSWD: ALL
+
+同时，由于普通用户没有配置xxx/sbin这样的路径，所以还需要在.bash_profile文件中增加环境变量：
+PATH=$PATH:$HOME/bin:/usr/kerberos/sbin:/usr/local/sbin:/sbin:/usr/sbin
+----------------------------------查看本机用户信息
+cat /etc/passwd
+文件的格式如下：
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+该文件以 : 作为字段分隔符，保存了本机所有用户的基本信息。以下详细说明其含义：
+用户名 密码 用户ID 主要组ID 描述(可选) HOME目录 默认SHELL
+在早期的 Linux 系统中，密码是保存在这个文件里的。但是该文件默认所有用户都可读，会对系统安全造成威胁。现在，密码都以散列的形式存储在了 /etc/shadow 中了。
+
+2.3 添加用户
+命令用法
+
+useradd [选项] <用户名>
+2.4 删除用户
+命令用法
+
+userdel [选项] <用户名>
+2.5 修改用户参数
+命令用法
+
+usermod [选项] <用户名>
+----------------------------------查看本机组信息
+cat /etc/group
+文件的格式如下：
+root:x:0:
+bin:x:1:
+该文件以 : 作为字段分隔符，保存了本机组的基本信息。以下详细说明其含义：
+组名 组管理员密码 组ID 组用户(仅有把该组作为附加组的用户)
+
+3.3 添加组
+命令用法
+
+groupadd [选项] <组名>
+
+3.4 删除组
+命令用法
+
+groupdel <组名>
+3.5 修改组参数
+命令用法
+
+groupmod [选项] <组名>
+
+3.6 组成员管理
+3.6.1 添加一个成员到组中
+
+命令用法
+
+gpasswd -a <用户名> <组名>
+3.6.2 从组中删除一个成员
+
+命令用法
+
+gpasswd -d <用户名> <组名>
+3.6.3 设置组成员列表
+
+命令用法
+
+gpasswd -M <用户名1>[,<用户名2>,...] <组名>
+3.6.4 设置组管理员列表
+
+命令用法
+
+gpasswd -A <用户名1>[,<用户名2>,...] <组名>
+3.6.5 设置组管理员密码
+
+命令用法
+
+gpasswd <组名>
+3.6.6 删除组管理员密码
+
+命令用法
+
+gpasswd -r <组名>
+3.6.7 查看用户加入的组
+
+命令用法
+
+groups [用户名]
+若不指定用户名，则查看当前用户加入的组。
+
+3.7 切换用户当前的组身份
+命令用法
+
+newgrp <组名>
