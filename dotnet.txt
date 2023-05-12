@@ -1,0 +1,13 @@
+dotnet standard是一种标准，dotnet framework和dotnet core都是对它的实现。
+dotnet core:
+C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.16\System.Private.CoreLib.dll
+
+dotnet:
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll	
+
+dotnet standard:
+C:\Users\qyc\.nuget\packages\netstandard.library\2.0.3\build\netstandard2.0\ref\netstandard.dll
+
+
+var 会被编译器编译成具体的类型，所以它任然是强类型的声明，dynamic是弱类型声明。
+System.Linq中的Where是IEnumerable<T>的扩展方法，用于筛选集合数据。
