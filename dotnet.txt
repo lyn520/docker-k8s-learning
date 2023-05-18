@@ -11,3 +11,29 @@ C:\Users\qyc\.nuget\packages\netstandard.library\2.0.3\build\netstandard2.0\ref\
 
 var 会被编译器编译成具体的类型，所以它任然是强类型的声明，dynamic是弱类型声明。
 System.Linq中的Where是IEnumerable<T>的扩展方法，用于筛选集合数据。
+
+model的字段类型如果是string，那么建议数据库使用nvarchar，而不是varchar，因为不确定你以后会存非英文的字符（比如中文），二者对数据库的性能影响很小，前者任何国家的字符都可以存，但后者只能存英文字符。
+
+
+Mysql的innoDB引擎默认强制使用主键为聚集索引，所以最好不要吧主键设置为guid类型；
+SQlServer中，不要把guid主键设置为聚集索引。
+
+以下命令将生成一个从指定 from 迁移到指定 to 迁移的 SQL 脚本。可以使用比 to 新的 from 来生成回退脚本。
+Script-Migration AddNewTables AddAuditTable
+
+EFCore反向工程：
+Scaffold-DbContext 'Server=(localdb)\mssqllocaldb;Database=AnimalDb;Trusted_Connection=True' Microsoft.EntityFrameworkCore.SqlServer -Context AnimalContext
+
+一对多：HasOne...WithMany...
+一对一：HasOne...WithOne...
+多对多：HasMany...WithMany...
+
+反着配置是一样的效果
+
+
+
+IQuerable<T>和IEnumerable<T>的不同：
+前者在服务器端（数据库中）评估，后者在客户端评估（内存中）评估，前者继承自后者。
+前者构建了一个可以被执行的查询，只有调用终结方法的时候才会被立即执行，如：遍历、ToArry()\ToList()\max()\Min()\Count()。
+返回值类型是前者，就是非终结方法，否则就是终结方法。
+方便分布构建
