@@ -16,6 +16,8 @@ namespace EFCore入门
         public DbSet<Dog> Dogs { get; set; }
 
         public DbSet<Cat> Cats { get; set; }
+        public DbSet<YearAmount> YearAmounts { get; set; }
+        public DbSet<StudentScore> StudentScores { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

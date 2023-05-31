@@ -9,6 +9,7 @@ namespace EFCore入门.Models
     public class Dog
     {
         public long Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
+        //public byte[] RowVersion { get; set; }
     }
 }

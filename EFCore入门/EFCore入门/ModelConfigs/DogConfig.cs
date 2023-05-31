@@ -13,8 +13,9 @@ namespace EFCore入门.ModelConfigs
     {
         public void Configure(EntityTypeBuilder<Dog> builder)
         {
-            builder.ToTable("T_Dog").Property(p => p.Name).HasMaxLength(20).IsRequired();
+            builder.ToTable("T_Dog").Property(p => p.Name).IsConcurrencyToken().HasMaxLength(20).IsRequired();
             builder.HasIndex(p => p.Name).IsUnique();
+            //builder.Property(p => p.RowVersion).IsRowVersion();
         }
     }
 }

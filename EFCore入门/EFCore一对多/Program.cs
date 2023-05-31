@@ -2,6 +2,7 @@
 using EFCore一对多;
 using EFCore一对多.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 using (var ctx = new MyContext())
 {
@@ -60,18 +61,48 @@ using (var ctx = new MyContext())
     //    Console.WriteLine(a.Title);
     //}
 
-    foreach (var a in ctx.Articles)
+    //foreach (var a in ctx.Articles)
+    //{
+    //    Console.WriteLine(a.Title);
+    //}
+    ////遇到性能瓶颈时可使用下面两种方式之一，否则使用上面的遍历即可。
+    //foreach (var a in await ctx.Articles.ToListAsync())
+    //{
+    //    Console.WriteLine(a.Title);
+    //}
+    //await foreach (var a in ctx.Articles.AsAsyncEnumerable())
+    //{
+    //    Console.WriteLine(a.Title);
+    //}
+
+    //var articles = ctx.Articles.Where(a => a.WithComments.All(c => c.Content.Contains("哈哈")));
+    /*
+     * SELECT[t].[Id], [t].[Content], [t].[Title]
+     FROM[T_Article] AS[t]
+     WHERE NOT EXISTS(
+         SELECT 1
+         FROM[T_Comment] AS[t0]
+         WHERE[t].[Id] = [t0].[WithArticleId] AND NOT([t0].[Content] LIKE N'%哈哈%'))*/
+    //var articles = ctx.Articles.Where(a => a.WithComments.Any(c => c.Content.Contains("哈哈")));
+    /*
+     * SELECT [t].[Id], [t].[Content], [t].[Title]
+      FROM [T_Article] AS [t]
+      WHERE EXISTS (
+          SELECT 1
+          FROM [T_Comment] AS [t0]
+          WHERE [t].[Id] = [t0].[WithArticleId] AND ([t0].[Content] LIKE N'%哈哈%'))*/
+    var articles = ctx.Articles.Where(a => !a.WithComments.Any(c => c.Content.Contains("哈哈")));
+    /*
+     * SELECT [t].[Id], [t].[Content], [t].[Title]
+      FROM [T_Article] AS [t]
+      WHERE NOT (EXISTS (
+          SELECT 1
+          FROM [T_Comment] AS [t0]
+          WHERE [t].[Id] = [t0].[WithArticleId] AND ([t0].[Content] LIKE N'%哈哈%')))*/
+    foreach (var article in articles)
     {
-        Console.WriteLine(a.Title);
-    }
-    //遇到性能瓶颈时可使用下面两种方式之一，否则使用上面的遍历即可。
-    foreach (var a in await ctx.Articles.ToListAsync())
-    {
-        Console.WriteLine(a.Title);
-    }
-    await foreach (var a in ctx.Articles.AsAsyncEnumerable())
-    {
-        Console.WriteLine(a.Title);
+        Console.WriteLine(article.Title + "," + article.Content);
+       
     }
 }
 

@@ -28,7 +28,7 @@ namespace EFCore一对多
             //optionsBuilder.EnableSensitiveDataLogging();
 
             ////标准日志
-            //optionsBuilder.UseLoggerFactory(MyLoggerFactory);
+            optionsBuilder.UseLoggerFactory(MyLoggerFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

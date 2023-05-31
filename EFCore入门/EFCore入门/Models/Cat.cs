@@ -9,7 +9,7 @@ namespace EFCore入门.Models
     public class Cat
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
         public int? Age { get; set; }
     }
 }

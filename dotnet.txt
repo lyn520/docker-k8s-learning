@@ -22,7 +22,7 @@ SQlServer中，不要把guid主键设置为聚集索引。
 Script-Migration AddNewTables AddAuditTable
 
 EFCore反向工程：
-Scaffold-DbContext 'Server=(localdb)\mssqllocaldb;Database=AnimalDb;Trusted_Connection=True' Microsoft.EntityFrameworkCore.SqlServer -Context AnimalContext
+Scaffold-DbContext 'Server=(localdb)\mssqllocaldb;Database=AnimalDb;Trusted_Connection=True' Microsoft.EntityFrameworkCore.SqlServer -Context AnimalContext -OutputDir Models -Force -UseDatabaseNames
 
 一对多：HasOne...WithMany...
 一对一：HasOne...WithOne...
@@ -37,3 +37,14 @@ IQuerable<T>和IEnumerable<T>的不同：
 前者构建了一个可以被执行的查询，只有调用终结方法的时候才会被立即执行，如：遍历、ToArry()\ToList()\max()\Min()\Count()。
 返回值类型是前者，就是非终结方法，否则就是终结方法。
 方便分布构建
+
+
+FormattableString 对内插值string进行参数替换
+
+
+SqlBulkCopy
+
+全局筛选：builder.HasQueryFilter()；忽略：ctx.IgnoreQueryFilters()。
+并发控制：IsConcurrencyToken()设置并发令牌，存在ABA问题，可以额外设置一个guid类型的字段同时为并发令牌，手动更新其值，SQL Server中timestamp和rowversion类型，byte[]字段设置为IsRowVersion()。
+
+表达式树：
