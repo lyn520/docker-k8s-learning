@@ -48,3 +48,11 @@ SqlBulkCopy
 并发控制：IsConcurrencyToken()设置并发令牌，存在ABA问题，可以额外设置一个guid类型的字段同时为并发令牌，手动更新其值，SQL Server中timestamp和rowversion类型，byte[]字段设置为IsRowVersion()。
 
 表达式树：
+
+http谓词：GET，POST新增，PUT整体更新，PATCH局部更新，DELETE删除；GET\PUT\DELETE是幂等的，POST不幂等。
+http状态码：200请求成功，201新增成功，404资源未找到，403没有权限。
+
+url：适合定位；长度有限制。
+QueryString：灵活；长度有限制。
+请求报文体：灵活；长度不限制；不支持GET\DELETE。
+
